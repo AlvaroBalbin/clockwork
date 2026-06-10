@@ -1,0 +1,26 @@
+# Everything the experiment needs, in one place. Change a number here and both
+# training and analysis pick it up, so a run is always reproducible from this file.
+
+# the task: learn (a + b) mod p from only a fraction of the pairs
+p: 113               # prime modulus. a prime keeps the Fourier structure clean
+train_frac: 0.3      # fraction of the p*p pairs the model is allowed to see
+
+# the model: a 1-layer transformer, no LayerNorm, so the circuit stays readable
+d_model: 128
+n_heads: 4
+d_head: 32
+d_mlp: 512
+
+# optimisation. the heavy weight_decay is the whole trick: it keeps pushing the
+# weights toward a simpler solution long after the training set is memorised,
+# and that simpler solution is the one that generalises.
+lr: 0.001
+weight_decay: 1.0
+betas: [0.9, 0.98]
+steps: 20000
+log_every: 100
+seed: 0
+
+# where things land
+runs_dir: runs       # model.pt, metrics.json, summary.json
+assets_dir: assets   # the figures
